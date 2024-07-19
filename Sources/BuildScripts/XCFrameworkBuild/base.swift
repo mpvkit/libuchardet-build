@@ -1013,13 +1013,6 @@ enum ArchType: String, CaseIterable {
         return false
     }
 
-    var hostArchitecture: String {
-        #if arch(arm64)
-        return "arm64"
-        #else
-        return "x86_64"
-        #endif
-    }
 
     var cpuFamily: String {
         switch self {
@@ -1037,6 +1030,14 @@ enum ArchType: String, CaseIterable {
         case .x86_64:
             return "x86_64"
         }
+    }
+
+    static var hostArch : ArchType {
+        #if arch(arm64)
+        return .arm64
+        #else
+        return .x86_64
+        #endif
     }
 }
 
@@ -1076,6 +1077,11 @@ enum Utility {
         }
         if !environment.keys.contains("PATH") {
             environment["PATH"] = BaseBuild.defaultPath
+
+            // meson need to use pip version on GITHUB ACTION, use brew version will build failed
+            if ProcessInfo.processInfo.environment.keys.contains("GITHUB_ACTION") {
+                environment["PATH"] = "/Library/Frameworks/Python.framework/Versions/Current/bin:" + environment["PATH"]!
+            }
         }
         task.environment = environment
 
@@ -1155,11 +1161,24 @@ enum Utility {
             if let logURL = logURL {
                 // print log when run in GitHub Action
                 if ProcessInfo.processInfo.environment.keys.contains("GITHUB_ACTION") {
-                    print("############# \(logURL) CONTENT BEGIN #############")
                     if let content = String(data: try Data(contentsOf: logURL), encoding: .utf8) {
+                        print("############# \(logURL) CONTENT BEGIN #############")
                         print(content)
+                        print("#############  \(logURL) CONTENT END #############")
+                        if #available(macOS 13.0, *) {
+                            let regErrLogPath = try Regex("A full log can be found at\\s+?(/.*\\.txt)")
+                            if let firstMatch = content.firstMatch(of: regErrLogPath) {
+                                let errPath = "\(firstMatch[1].value ?? "")"
+                                if !errPath.isEmpty {
+                                    print("############# \(errPath) CONTENT BEGIN #############")
+                                    let content = Utility.shell("cat \(errPath)", isOutput: true)
+                                    print(content ?? "")
+                                    print("#############  \(errPath) CONTENT END #############")
+                                }
+                            }
+                        }
                     }
-                    print("#############  \(logURL) CONTENT END #############")
+                    
                 }
                 print("please view log file for detail: \(logURL)\n")
             }
