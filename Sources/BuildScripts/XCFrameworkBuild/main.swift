@@ -47,4 +47,10 @@ private class BuildUchardet: BaseBuild {
     init() {
         super.init(library: .libuchardet)
     }
+
+    override func arguments(platform : PlatformType, arch : ArchType) -> [String] {
+        [
+            "-DBUILD_BINARY=0",
+        ]
+    }
 }
