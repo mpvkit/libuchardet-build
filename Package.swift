@@ -21,7 +21,7 @@ let package = Package(
         .binaryTarget(
             name: "Libuchardet",
             url: "https://github.com/mpvkit/libuchardet-build/releases/download/0.0.8-xcode/Libuchardet.xcframework.zip",
-            checksum: "0a67baa43ea8ee698affe484c76077757805e2ca8f960c88fead35687721b706"
+            checksum: "503202caa0dafb6996b2443f53408a713b49f6c2d4a26d7856fd6143513a50d7"
         ),
         //AUTO_GENERATE_TARGETS_END//
     ]
