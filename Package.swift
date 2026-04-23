@@ -4,9 +4,12 @@ import PackageDescription
 
 let package = Package(
     name: "libuchardet",
-    platforms: [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13)],
+    platforms: [.macOS(.v11), .iOS(.v14), .tvOS(.v14)],
     products: [
-        .library(name: "Libuchardet", targets: ["_Libuchardet"]),
+        .library(
+            name: "Libuchardet",
+            targets: ["_Libuchardet"]
+        ),
     ],
     targets: [
         // Need a dummy target to embedded correctly.
@@ -20,8 +23,8 @@ let package = Package(
 
         .binaryTarget(
             name: "Libuchardet",
-            url: "https://github.com/mpvkit/libuchardet-build/releases/download/0.0.8-xcode/Libuchardet.xcframework.zip",
-            checksum: "503202caa0dafb6996b2443f53408a713b49f6c2d4a26d7856fd6143513a50d7"
+            url: "https://github.com/mpvkit/libuchardet-build/releases/download/0.0.8/Libuchardet.xcframework.zip",
+            checksum: "ea4f548a230a755e059144657cc9e2ff563c1cdeae03974c38f8b6e1a40303fb"
         ),
         //AUTO_GENERATE_TARGETS_END//
     ]
