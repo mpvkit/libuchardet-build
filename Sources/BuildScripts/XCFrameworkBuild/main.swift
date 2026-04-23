@@ -1,17 +1,17 @@
 import Foundation
+import BuildShared
 
 do {
-    let options = try ArgumentOptions.parse(CommandLine.arguments)
-    try Build.performCommand(options)
+    let options = try BuildRunner.performCommand()
 
-    try BuildUchardet().buildALL()
+    try BuildUchardet(options: options).buildALL()
 } catch {
     print(error.localizedDescription)
     exit(1)
 }
 
 
-enum Library: String, CaseIterable {
+enum Library: String, CaseIterable, BuildLibrary {
     case libuchardet
     var version: String {
         switch self {
@@ -34,8 +34,8 @@ enum Library: String, CaseIterable {
             return  [
                 .target(
                     name: "Libuchardet",
-                    url: "https://github.com/mpvkit/libuchardet-build/releases/download/\(BaseBuild.options.releaseVersion)/Libuchardet.xcframework.zip",
-                    checksum: "https://github.com/mpvkit/libuchardet-build/releases/download/\(BaseBuild.options.releaseVersion)/Libuchardet.xcframework.checksum.txt"
+                    url: "https://github.com/mpvkit/libuchardet-build/releases/download/\(BuildRunner.options!.releaseVersion)/Libuchardet.xcframework.zip",
+                    checksum: "https://github.com/mpvkit/libuchardet-build/releases/download/\(BuildRunner.options!.releaseVersion)/Libuchardet.xcframework.checksum.txt"
                 ),
             ]
         }
@@ -44,8 +44,8 @@ enum Library: String, CaseIterable {
 
 
 private class BuildUchardet: BaseBuild {
-    init() {
-        super.init(library: .libuchardet)
+    init(options: ArgumentOptions) {
+        super.init(library: Library.libuchardet, options: options)
     }
 
     override func arguments(platform : PlatformType, arch : ArchType) -> [String] {
