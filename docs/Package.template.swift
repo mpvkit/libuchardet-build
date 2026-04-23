@@ -6,7 +6,10 @@ let package = Package(
     name: "libuchardet",
     platforms: [.macOS(.v11), .iOS(.v14), .tvOS(.v14)],
     products: [
-        .library(name: "Libuchardet", targets: ["_Libuchardet"]),
+        .library(
+            name: "Libuchardet",
+            targets: ["_Libuchardet"]
+        ),
     ],
     targets: [
         // Need a dummy target to embedded correctly.
