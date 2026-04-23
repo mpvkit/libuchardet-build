@@ -34,8 +34,8 @@ enum Library: String, CaseIterable, BuildLibrary {
             return  [
                 .target(
                     name: "Libuchardet",
-                    url: "https://github.com/mpvkit/libuchardet-build/releases/download/\(BuildRunner.options!.releaseVersion)/Libuchardet.xcframework.zip",
-                    checksum: "https://github.com/mpvkit/libuchardet-build/releases/download/\(BuildRunner.options!.releaseVersion)/Libuchardet.xcframework.checksum.txt"
+                    url: "https://github.com/mpvkit/libuchardet-build/releases/download/\(BuildRunner.options?.releaseVersion ?? "0.0.0")/Libuchardet.xcframework.zip",
+                    checksum: "https://github.com/mpvkit/libuchardet-build/releases/download/\(BuildRunner.options?.releaseVersion ?? "0.0.0")/Libuchardet.xcframework.checksum.txt"
                 ),
             ]
         }
